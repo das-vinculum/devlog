@@ -1,0 +1,37 @@
+{
+	"ImportPath": "github.com/das-vinculum/devlog",
+	"GoVersion": "go1.6",
+	"GodepVersion": "v60",
+	"Deps": [
+		{
+			"ImportPath": "github.com/HouzuoGuo/tiedot/data",
+			"Comment": "3.2-21-ge1426aa",
+			"Rev": "e1426aa6a9e4e03e529841286de45bd84776280b"
+		},
+		{
+			"ImportPath": "github.com/HouzuoGuo/tiedot/db",
+			"Comment": "3.2-21-ge1426aa",
+			"Rev": "e1426aa6a9e4e03e529841286de45bd84776280b"
+		},
+		{
+			"ImportPath": "github.com/HouzuoGuo/tiedot/dberr",
+			"Comment": "3.2-21-ge1426aa",
+			"Rev": "e1426aa6a9e4e03e529841286de45bd84776280b"
+		},
+		{
+			"ImportPath": "github.com/HouzuoGuo/tiedot/gommap",
+			"Comment": "3.2-21-ge1426aa",
+			"Rev": "e1426aa6a9e4e03e529841286de45bd84776280b"
+		},
+		{
+			"ImportPath": "github.com/HouzuoGuo/tiedot/tdlog",
+			"Comment": "3.2-21-ge1426aa",
+			"Rev": "e1426aa6a9e4e03e529841286de45bd84776280b"
+		},
+		{
+			"ImportPath": "github.com/codegangsta/cli",
+			"Comment": "1.2.0-219-ga294348",
+			"Rev": "a2943485b110df8842045ae0600047f88a3a56a1"
+		}
+	]
+}
