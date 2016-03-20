@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/codegangsta/cli"
 	"github.com/das-vinculum/devlog/storage"
 	"os"
@@ -25,11 +26,26 @@ func main() {
 			Aliases: []string{"a"},
 			Usage:   "Add a task which has been done",
 			Action: func(c *cli.Context) {
+				now := time.Now()
 				logEntry := &storage.Logentry{
 					Entry: strings.Join(c.Args()[:], " "),
-					Date:  time.Now(),
+					Date:  &now,
 				}
 				logEntry.Store()
+			},
+		},
+		{
+			Name:    "list",
+			Aliases: []string{"a"},
+			Usage:   "list all done tasks",
+			Action: func(c *cli.Context) {
+				entries := storage.LoadAllEntries()
+				var key int
+				var val *storage.Logentry
+				for key, val = range entries {
+					fmt.Printf("Date: %v is: %v and has the id %v\n", val.Date, val.Entry, key)
+				}
+
 			},
 		},
 	}

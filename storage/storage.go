@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/HouzuoGuo/tiedot/db"
 	"os"
@@ -9,7 +10,7 @@ import (
 
 type Logentry struct {
 	Entry string
-	Date  time.Time
+	Date  *time.Time
 }
 
 func (logEntry Logentry) Store() {
@@ -25,7 +26,8 @@ func (logEntry Logentry) Store() {
 	}
 	docID, err := devlog.Insert(map[string]interface{}{
 		"entry": logEntry.Entry,
-		"date":  logEntry.Date.Format(time.UnixDate)})
+		"date":  &logEntry.Date,
+	})
 
 	readBack, err := devlog.Read(docID)
 	fmt.Printf("Written to log: %v\n", readBack)
@@ -33,6 +35,39 @@ func (logEntry Logentry) Store() {
 	if err := myDB.Close(); err != nil {
 		panic(err)
 	}
+}
+
+func LoadAllEntries() map[int]*Logentry {
+	homeDir := os.Getenv("HOME")
+	myDBDir := homeDir + "/MyDatabase"
+	myDB, err := db.OpenDB(myDBDir)
+	check(err)
+	devlog := myDB.Use("Devlog")
+
+	var query interface{}
+	json.Unmarshal([]byte(`["all"]`), &query)
+	queryResult := make(map[int]struct{})
+	if err := db.EvalQuery(query, devlog, &queryResult); err != nil {
+		panic(err)
+	}
+	entries := make(map[int]*Logentry)
+	// Query result are document IDs
+	for id := range queryResult {
+		// To get query result document, simply read it
+		readBack, err := devlog.Read(id)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("Query returned date: %v\n", readBack["date"])
+		entryDate, err := time.Parse(time.RFC3339Nano, readBack["date"].(string))
+		check(err)
+		entries[id] = &Logentry{
+			Entry: readBack["entry"].(string),
+			Date:  &entryDate,
+		}
+		fmt.Printf("Query returned document %v\n", readBack)
+	}
+	return entries
 }
 
 func check(e error) {
