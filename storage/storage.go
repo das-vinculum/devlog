@@ -58,14 +58,16 @@ func LoadAllEntries() map[int]*Logentry {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("Query returned date: %v\n", readBack["date"])
 		entryDate, err := time.Parse(time.RFC3339Nano, readBack["date"].(string))
 		check(err)
 		entries[id] = &Logentry{
 			Entry: readBack["entry"].(string),
 			Date:  &entryDate,
 		}
-		fmt.Printf("Query returned document %v\n", readBack)
+	}
+	// Gracefully close database
+	if err := myDB.Close(); err != nil {
+		panic(err)
 	}
 	return entries
 }
