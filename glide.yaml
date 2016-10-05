@@ -1,0 +1,8 @@
+package: github.com/das-vinculum/devlog
+import:
+- package: github.com/HouzuoGuo/tiedot
+  version: ^3.3.0
+  subpackages:
+  - db
+- package: github.com/codegangsta/cli
+  version: ^1.18.1
